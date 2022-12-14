@@ -43,51 +43,56 @@ from HANGXUAT
 group by MAHD
 ORDER BY SUM(SLBAN * DONGIA) Desc;
 --BÀI 3
-create function getthu(@ngay datetime)
-	returns nvarchar(100)
-as
-begin
-	declare @songaytrongtuan int;
-	set @songaytrongtuan = DATEPART(WEEKDAY, @ngay);
-	declare @thu nvarchar (100);
-
+CREATE FUNCTION getThu(@ngay datetime)
+	RETURNS NVARCHAR(100)
+AS
+BEGIN
+	DECLARE @songaytrongtuan int;
+	set @songaytrongtuan = DATEPART (WEEKDAY,@ngay);
+	DECLARE @thu NVARCHAR(100);
+	
 	if (@songaytrongtuan = 0)
-	begin
-		set @thu = 'thu hai';
-	end
-		if (@songaytrongtuan = 0)
-	begin
-		set @thu = 'thu ba';
-	end
-		if (@songaytrongtuan = 0)
-	begin
-		set @thu = 'thu tu';
-	end
-		if (@songaytrongtuan = 0)
-	begin
-		set @thu = 'thu nam';
-	end
-		if (@songaytrongtuan = 0)
-	begin
-		set @thu = 'thu sau';
-	end
-		if (@songaytrongtuan = 0)
-	begin
-		set @thu = 'thu bay';
-	end
-		if (@songaytrongtuan = 0)
-	begin
-		set @thu = 'Chu nhat';
-	end
-	CREATE FUNCTION Cau3 (@mahd int(10))
+	BEGIN
+		SET @thu = N'Thứ hai';
+	END
+	if (@songaytrongtuan = 0)
+	BEGIN
+		SET @thu = N'Thứ ba';
+	END
+	if (@songaytrongtuan = 0)
+	BEGIN
+		SET @thu = N'Thứ tư';
+	END
+	if (@songaytrongtuan = 0)
+	BEGIN
+		SET @thu = N'Thứ năm';
+	END
+	if (@songaytrongtuan = 0)
+	BEGIN
+		SET @thu = N'Thứ sáu';
+	END
+	if (@songaytrongtuan = 0)
+	BEGIN
+		SET @thu = N'Thứ bảy';
+	END
+	if (@songaytrongtuan = 0)
+	BEGIN
+		SET @thu = N'Chủ nhật';
+	END
+	RETURN @thu;
+end
+CREATE FUNCTION ham (
+    @MAHD nvarchar(10)
+)
 RETURNS TABLE
 AS
 RETURN
-    SELECT dbo.HDBAN.MAHD, NGAYXUAT, MAVT, DONGIA,SLBAN, dbo.getThu(NGAYXUAT) as N'Ngày Thứ'
-    FROM dbo.HANGXUAT, db.HDBAN
-    WHERE dbo.HDBAN.MAHD = dbo.HANGXUAT.MAHD AND dbo.HANGXUAT.MAHD = @mahd
-    --test
-    SELECT * FROM dbo.Cau3(2)
+    SELECT 
+        dbo.HDBAN.MAHD,NGAYXUAT,MAVT,DONGIA,SLBAN, dbo.getThu(NgayXuat) as 'Ngay Thu' 
+    FROM dbo.HANGXUAT,dbo.HDBAN
+    WHERE dbo.HDBAN.MAHD=dbo.HANGXUAT.MAHD AND dbo.HANGXUAT.MAHD = @MAHD
+
+select*from dbo.ham (2)
 --Bài 4
 CREATE PROCEDURE p4 
 @thang int, @nam int 
